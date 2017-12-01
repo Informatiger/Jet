@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.lvMessages = new System.Windows.Forms.ListView();
-            this.colHeadUsername = new System.Windows.Forms.ColumnHeader();
-            this.colHeadMessage = new System.Windows.Forms.ColumnHeader();
-            this.colHeadTime = new System.Windows.Forms.ColumnHeader();
+            this.colHeadUsername = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colHeadMessage = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colHeadTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSendMessage = new MetroFramework.Controls.MetroButton();
             this.btnSendImage = new MetroFramework.Controls.MetroButton();
             this.comboBox1 = new MetroFramework.Controls.MetroComboBox();
@@ -124,7 +124,7 @@
             this.comboBox1.Items.AddRange(new object[] {
             "37337",
             "7337"});
-            this.comboBox1.Location = new System.Drawing.Point(20, 89);
+            this.comboBox1.Location = new System.Drawing.Point(20, 55);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(268, 29);
@@ -136,7 +136,7 @@
             // 
             this.btnStartServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartServer.Cursor = System.Windows.Forms.Cursors.Default;
-            this.btnStartServer.Location = new System.Drawing.Point(296, 89);
+            this.btnStartServer.Location = new System.Drawing.Point(296, 55);
             this.btnStartServer.Margin = new System.Windows.Forms.Padding(4);
             this.btnStartServer.Name = "btnStartServer";
             this.btnStartServer.Size = new System.Drawing.Size(276, 29);
@@ -286,12 +286,13 @@
             this.tbFriedIP.CustomButton.UseSelectable = true;
             this.tbFriedIP.CustomButton.Visible = false;
             this.tbFriedIP.Lines = new string[0];
-            this.tbFriedIP.Location = new System.Drawing.Point(296, 57);
+            this.tbFriedIP.Location = new System.Drawing.Point(296, 92);
             this.tbFriedIP.Margin = new System.Windows.Forms.Padding(4);
             this.tbFriedIP.MaxLength = 32767;
             this.tbFriedIP.Name = "tbFriedIP";
             this.tbFriedIP.PasswordChar = '\0';
             this.tbFriedIP.PlaceHolderText = "Friends IP";
+            this.tbFriedIP.ReadOnly = true;
             this.tbFriedIP.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.tbFriedIP.SelectedText = "";
             this.tbFriedIP.SelectionLength = 0;
@@ -322,7 +323,7 @@
             this.tbLocalIP.CustomButton.UseSelectable = true;
             this.tbLocalIP.CustomButton.Visible = false;
             this.tbLocalIP.Lines = new string[0];
-            this.tbLocalIP.Location = new System.Drawing.Point(20, 57);
+            this.tbLocalIP.Location = new System.Drawing.Point(20, 92);
             this.tbLocalIP.Margin = new System.Windows.Forms.Padding(4);
             this.tbLocalIP.MaxLength = 32767;
             this.tbLocalIP.Name = "tbLocalIP";

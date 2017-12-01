@@ -318,6 +318,7 @@ namespace Jet
             socket.Bind(epLocal);
             comboBox1.Enabled = false;
             btnStartServer.Enabled = false;
+            tbFriedIP.ReadOnly = false;
             tbLocalIP.ReadOnly = true;
         }
 
