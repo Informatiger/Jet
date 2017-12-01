@@ -1,4 +1,8 @@
 # Jet
-Jet Simple Chat (At the moment only p2p)
+Jet Simple Chat (only p2p support for now, but I'm working on a small server)
 
-Icons made by [Buddha](https://www.flaticon.com/authors/pixel-buddha"Pixel) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [3.0 BY](http://creativecommons.org/licenses/by/3.0/CC)
+#### Used libraries:
+* [MetroModernUI](https://github.com/dennismagno/metroframework-modern-ui)
+
+#### Used icons:
+* The plane icon was made by [Buddha](https://www.flaticon.com/authors/pixel-buddha"Pixel) from [www.flaticon.com](https://www.flaticon.com/) and is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/CC)
