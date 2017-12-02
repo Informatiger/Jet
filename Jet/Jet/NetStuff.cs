@@ -10,6 +10,10 @@ namespace Jet
 {
     class NetStuff
     {
+        /// <summary>
+        /// Returns local ip address
+        /// </summary>
+        /// <returns>IPA</returns>
         public static IPAddress GetLocalIPAddress()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());

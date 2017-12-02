@@ -15,6 +15,13 @@ using System.Text.RegularExpressions;
 
 namespace Jet
 {
+    struct MESSAGE_TYPE
+    {
+        public const string TEXT = "TEXT";
+
+        public const string URL = "URL";
+    }
+
     public partial class MainForm : MetroFramework.Forms.MetroForm
     {
         Socket socket;
@@ -25,7 +32,6 @@ namespace Jet
         StringBuilder messageBuilder = new StringBuilder();
 
         public bool ReallyClose { get; set; }
-
         public bool AllowSendMessage { get; set; }
 
         public MainForm(String[] args)
@@ -79,18 +85,14 @@ namespace Jet
 
         private void tbMessage_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && AllowSendMessage && (!String.IsNullOrEmpty(tbMessage.Text)))
             {
                 foreach (var msg in tbMessage.Text.Split('\n'))
                 {
                     messageBuilder.AppendLine(msg);
                 }
-
-                if (AllowSendMessage && (!String.IsNullOrEmpty(tbMessage.Text)))
-                {
-                    SendTextMessage(messageBuilder.ToString());
-                    messageBuilder.Clear();
-                }
+                SendTextMessage(messageBuilder.ToString());
+                messageBuilder.Clear();
             }
         }
 
@@ -98,10 +100,10 @@ namespace Jet
         {
             if (e.KeyCode == Keys.Enter)
             {
-                StartListening();
+                ConnectToFriend();
                 tbMessage.Enabled = true;
                 btnSendImage.Enabled = true;
-                comboBox2.Enabled = true;
+                cbEmoji.Enabled = true;
                 tbFriedIP.Enabled = false;
             }
         }
@@ -112,6 +114,7 @@ namespace Jet
                 SendTextMessage(tbMessage.Text);
 
         }
+
         private void btnSendImage_Click(object sender, EventArgs e)
         {
             var fileOpenDialog = new OpenFileDialog();
@@ -130,6 +133,10 @@ namespace Jet
 
         }
 
+        /// <summary>
+        /// Method to send messages
+        /// </summary>
+        /// <param name="message">message content</param>
         private void SendTextMessage(String message)
         {
             if (String.IsNullOrEmpty(message))
@@ -150,11 +157,10 @@ namespace Jet
 
                 var item = new ListViewItem(stringArray);
                 if (IsUrlValid(message))
-                {
-                    item.Tag = "URL";
-                }
+                    item.Tag = MESSAGE_TYPE.URL;
                 else
-                    item.Tag = "TEXT";
+                    item.Tag = MESSAGE_TYPE.TEXT;
+
                 AddItem(item);
 
                 tbMessage.Text = String.Empty;
@@ -162,11 +168,14 @@ namespace Jet
             }
             catch (Exception ex)
             {
-                SetStatus(ex.ToString());
+                ShowAlert(ex.ToString());
             }
         }
 
-        private void StartListening()
+        /// <summary>
+        /// Connetcting to your friends server
+        /// </summary>
+        private void ConnectToFriend()
         {
             try
             {
@@ -183,10 +192,14 @@ namespace Jet
             }
             catch (Exception ex)
             {
-                SetStatus(ex.ToString());
+                ShowAlert(ex.ToString());
             }
         }
 
+        /// <summary>
+        /// CallBack for DataReceived
+        /// </summary>
+        /// <param name="ar">AsyncResult</param>
         private void MessageCallBack(IAsyncResult ar)
         {
             try
@@ -212,45 +225,49 @@ namespace Jet
                 //    lvMessages.Items.Add(item);
                 //}
                 //else
-                if (1==1)
-                {
-                    var stringArray = new String[3];
-                    stringArray[0] = "Friend";
-                    stringArray[1] = ReplaceNonPrintableCharacters(receivedMessage);
-                    stringArray[2] = DateTime.Now.ToShortTimeString();
 
-                    var item = new ListViewItem(stringArray);
-                    if (IsUrlValid(receivedMessage))
-                    {
-                        item.Tag = "URL";
-                    }
-                    else
-                        item.Tag = "TEXT";
-                    AddItem(item);
-                    if (WindowState == FormWindowState.Minimized)
-                        Notify(receivedMessage);
-                }
+                var stringArray = new String[3];
+                stringArray[0] = "Friend";
+                stringArray[1] = ReplaceNonPrintableCharacters(receivedMessage);
+                stringArray[2] = DateTime.Now.ToShortTimeString();
 
-                var buffer = new Byte[1500];
+                var item = new ListViewItem(stringArray);
+                if (IsUrlValid(receivedMessage))
+                    item.Tag = MESSAGE_TYPE.URL;
+                else
+                    item.Tag = MESSAGE_TYPE.TEXT;
+                AddItem(item);
+                if (WindowState == FormWindowState.Minimized)
+                    Notify(receivedMessage);
+
+                var buffer = new Byte[4096 * 4];
                 socket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref remote,
                     new AsyncCallback(MessageCallBack), buffer);
             }
             catch (Exception ex)
             {
-                SetStatus(ex.ToString());
+                ShowAlert(ex.ToString());
             }
         }
 
-        public void SetStatus(string value)
+        /// <summary>
+        /// Shows a messagebox
+        /// </summary>
+        /// <param name="value">message content</param>
+        public void ShowAlert(string value)
         {
             if (InvokeRequired)
             {
-                this.Invoke(new Action<string>(SetStatus), new object[] { value });
+                this.Invoke(new Action<string>(ShowAlert), new object[] { value });
                 return;
             }
             MetroFramework.MetroMessageBox.Show(this, value);
         }
 
+        /// <summary>
+        /// calls the NotifyMessage method (by invoke)
+        /// </summary>
+        /// <param name="message">Notify message</param>
         public void Notify(String message)
         {
             if (InvokeRequired)
@@ -261,12 +278,20 @@ namespace Jet
             NotifyMessage(message);
         }
 
+        /// <summary>
+        /// shows a toast notification
+        /// </summary>
+        /// <param name="message">content of the toast notification</param>
         public void NotifyMessage(String message)
         {
             notifyIcon1.BalloonTipText = message;
             notifyIcon1.ShowBalloonTip(5000);
         }
 
+        /// <summary>
+        /// adds item to ListView (by invoke)
+        /// </summary>
+        /// <param name="itm">Item</param>
         public void AddItem(ListViewItem itm)
         {
             if (InvokeRequired)
@@ -280,43 +305,52 @@ namespace Jet
             lvMessages.EnsureVisible(x);
         }
 
+        /// <summary>
+        /// check if url is vaild
+        /// </summary>
+        /// <param name="url">URL</param>
+        /// <returns>URL valid?</returns>
         private bool IsUrlValid(string url)
         {
-
-            string pattern = @"^(http|https|ftp|)\://|[a-zA-Z0-9\-\.]+\.[a-zA-Z](:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*[^\.\,\)\(\s]$";
+            string pattern = @"^(file|http|https|ftp|)\://|[a-zA-Z0-9\-\.]+\.[a-zA-Z](:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*[^\.\,\)\(\s]$";
             Regex reg = new Regex(pattern, RegexOptions.Compiled | RegexOptions.IgnoreCase);
             return reg.IsMatch(url);
         }
 
+        /// <summary>
+        /// removes non-printable characters
+        /// </summary>
+        /// <param name="s">text</param>
+        /// <returns>text without non-printable characters</returns>
         string ReplaceNonPrintableCharacters(string s)
         {
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
             {
-                char c = s[i];
-                byte b = (byte)c;
-                if (b >= 32)
-                    result.Append(c);
+                var character = s[i];
+                if (((byte)character) >= 32)
+                    result.Append(character);
             }
             return result.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnStartServer_Click(object sender, EventArgs e)
         {
             var port = 0;
 
-            int.TryParse(comboBox1.SelectedItem.ToString(), out port);
+            int.TryParse(cbPorts.SelectedItem.ToString(), out port);
 
             if (port == 7337)
                 remotePort = 37337;
-            else if (port == 37337)
+            else
                 remotePort = 7337;
 
-            MetroFramework.MetroMessageBox.Show(this, "Server started!\nPort: " + port + "\nRemotePort: " + remotePort);
+            ShowAlert("Server started!\nPort: " + port + "\nRemotePort: " + remotePort);
 
             epLocal = new IPEndPoint(IPAddress.Parse(tbLocalIP.Text), port);
             socket.Bind(epLocal);
-            comboBox1.Enabled = false;
+
+            cbPorts.Enabled = false;
             btnStartServer.Enabled = false;
             tbFriedIP.ReadOnly = false;
             tbLocalIP.ReadOnly = true;
@@ -341,7 +375,7 @@ namespace Jet
             }
             catch (Exception ex)
             {
-                SetStatus(ex.ToString());
+                ShowAlert(ex.ToString());
             }
         }
 
@@ -365,30 +399,19 @@ namespace Jet
         {
             if (WindowState == FormWindowState.Minimized)
             {
-                Show();
                 WindowState = FormWindowState.Normal;
+                Show();
             }
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbEmoji_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedIndex > 0)
+            if (cbEmoji.SelectedIndex > 0)
             {
                 if (tbMessage.Text == tbMessage.PlaceHolderText)
                     tbMessage.Text = String.Empty;
-                tbMessage.Text += comboBox2.SelectedItem.ToString();
+                tbMessage.Text += cbEmoji.SelectedItem.ToString();
             }
-        }
-
-        private void lvMessages_ItemAdded(MetroFramework.Controls.MetroListView obj)
-        {
-            var x = lvMessages.Items.Count - 1;
-            lvMessages.Items[x].Focused = false;
-            lvMessages.Items[x].Selected = false;
-
-            lvMessages.EnsureVisible(x);
-            lvMessages.Items[x].Focused = true;
-            lvMessages.Items[x].Selected = true;
         }
 
         private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)

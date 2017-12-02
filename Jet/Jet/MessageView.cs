@@ -24,6 +24,9 @@ namespace Jet
             textBox1.Text = message;
         }
 
+        /// <summary>
+        /// Custom Font loading (disabled at the moment)
+        /// </summary>
         private void InitCustomFont()
         {
             PrivateFontCollection pfc = new PrivateFontCollection();

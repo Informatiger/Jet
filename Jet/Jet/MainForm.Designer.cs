@@ -36,12 +36,12 @@
             this.colHeadTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnSendMessage = new MetroFramework.Controls.MetroButton();
             this.btnSendImage = new MetroFramework.Controls.MetroButton();
-            this.comboBox1 = new MetroFramework.Controls.MetroComboBox();
+            this.cbPorts = new MetroFramework.Controls.MetroComboBox();
             this.btnStartServer = new MetroFramework.Controls.MetroButton();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboBox2 = new MetroFramework.Controls.MetroComboBox();
+            this.cbEmoji = new MetroFramework.Controls.MetroComboBox();
             this.metroStyleManager1 = new MetroFramework.Components.MetroStyleManager(this.components);
             this.tbFriedIP = new Jet.TextBoxWithPlaceHolder();
             this.tbLocalIP = new Jet.TextBoxWithPlaceHolder();
@@ -117,20 +117,20 @@
             this.btnSendImage.Visible = false;
             this.btnSendImage.Click += new System.EventHandler(this.btnSendImage_Click);
             // 
-            // comboBox1
+            // cbPorts
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.ItemHeight = 23;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbPorts.FormattingEnabled = true;
+            this.cbPorts.ItemHeight = 23;
+            this.cbPorts.Items.AddRange(new object[] {
             "37337",
             "7337"});
-            this.comboBox1.Location = new System.Drawing.Point(20, 55);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(268, 29);
-            this.comboBox1.TabIndex = 7;
-            this.comboBox1.UseSelectable = true;
-            this.comboBox1.UseStyleColors = true;
+            this.cbPorts.Location = new System.Drawing.Point(20, 55);
+            this.cbPorts.Margin = new System.Windows.Forms.Padding(4);
+            this.cbPorts.Name = "cbPorts";
+            this.cbPorts.Size = new System.Drawing.Size(268, 29);
+            this.cbPorts.TabIndex = 7;
+            this.cbPorts.UseSelectable = true;
+            this.cbPorts.UseStyleColors = true;
             // 
             // btnStartServer
             // 
@@ -144,7 +144,7 @@
             this.btnStartServer.Text = "Start Local Server";
             this.btnStartServer.UseSelectable = true;
             this.btnStartServer.UseStyleColors = true;
-            this.btnStartServer.Click += new System.EventHandler(this.button1_Click);
+            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
             // 
             // notifyIcon1
             // 
@@ -171,14 +171,14 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
-            // comboBox2
+            // cbEmoji
             // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.comboBox2.Enabled = false;
-            this.comboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.ItemHeight = 23;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.cbEmoji.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbEmoji.Enabled = false;
+            this.cbEmoji.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbEmoji.FormattingEnabled = true;
+            this.cbEmoji.ItemHeight = 23;
+            this.cbEmoji.Items.AddRange(new object[] {
             "",
             "🤣",
             "☺",
@@ -255,14 +255,14 @@
             "👋",
             "💪",
             "🖕"});
-            this.comboBox2.Location = new System.Drawing.Point(20, 360);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(71, 29);
-            this.comboBox2.TabIndex = 10;
-            this.comboBox2.UseSelectable = true;
-            this.comboBox2.UseStyleColors = true;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            this.cbEmoji.Location = new System.Drawing.Point(20, 360);
+            this.cbEmoji.Margin = new System.Windows.Forms.Padding(4);
+            this.cbEmoji.Name = "cbEmoji";
+            this.cbEmoji.Size = new System.Drawing.Size(71, 29);
+            this.cbEmoji.TabIndex = 10;
+            this.cbEmoji.UseSelectable = true;
+            this.cbEmoji.UseStyleColors = true;
+            this.cbEmoji.SelectedIndexChanged += new System.EventHandler(this.cbEmoji_SelectedIndexChanged);
             // 
             // metroStyleManager1
             // 
@@ -390,9 +390,9 @@
             this.BackImagePadding = new System.Windows.Forms.Padding(5);
             this.BackLocation = MetroFramework.Forms.BackLocation.TopRight;
             this.ClientSize = new System.Drawing.Size(597, 404);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.cbEmoji);
             this.Controls.Add(this.btnStartServer);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbPorts);
             this.Controls.Add(this.btnSendImage);
             this.Controls.Add(this.btnSendMessage);
             this.Controls.Add(this.tbFriedIP);
@@ -426,12 +426,12 @@
         private TextBoxWithPlaceHolder tbFriedIP;
         private MetroFramework.Controls.MetroButton btnSendMessage;
         private MetroFramework.Controls.MetroButton btnSendImage;
-        private MetroFramework.Controls.MetroComboBox comboBox1;
+        private MetroFramework.Controls.MetroComboBox cbPorts;
         private MetroFramework.Controls.MetroButton btnStartServer;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private MetroFramework.Controls.MetroComboBox comboBox2;
+        private MetroFramework.Controls.MetroComboBox cbEmoji;
         private MetroFramework.Components.MetroStyleManager metroStyleManager1;
     }
 }
