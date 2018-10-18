@@ -1,3 +1,8 @@
+# This repo is archived
+## See the new repo at https://gitlab.com/informatiger/Jet
+
+---
+
 # Jet
 Jet Simple Chat (only p2p support for now, but I'm working on a small server)
 
